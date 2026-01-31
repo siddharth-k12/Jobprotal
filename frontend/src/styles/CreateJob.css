@@ -1,0 +1,154 @@
+/* CreateJob.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --primary: #c9f33c;
+  --heading: #0d2b3e;
+  --text: #5b6b75;
+  --border: #e7edf2;
+}
+
+/* PAGE WRAPPER */
+.create-job-page {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding: 40px 16px;
+  font-family: "Inter", sans-serif;
+}
+
+/* HEADER */
+.create-job-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.create-job-header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--heading);
+}
+
+.create-job-header p {
+  font-size: 14px;
+  color: var(--text);
+  margin-top: 6px;
+}
+
+/* FORM CARD */
+.create-job-form {
+  max-width: 620px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* INPUTS */
+.create-job-form input,
+.create-job-form textarea,
+.create-job-form select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  outline: none;
+  color: var(--heading);
+  background: #fff;
+}
+
+.create-job-form textarea {
+  resize: none;
+}
+
+.create-job-form input:focus,
+.create-job-form textarea:focus,
+.create-job-form select:focus {
+  border-color: var(--primary);
+}
+
+/* SUBMIT BUTTON */
+.create-job-btn {
+  margin-top: 10px;
+  background: var(--primary);
+  border: none;
+  padding: 14px;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--heading);
+}
+
+.create-job-btn:active {
+  transform: scale(0.96);
+}
+
+.create-job-top {
+  max-width: 720px;
+  margin: 20px auto 0;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1.5px solid #0d2b3e;
+  padding: 8px 18px;
+  border-radius: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #0d2b3e;
+}
+
+.back-btn:hover {
+  background: #0d2b3e;
+  color: #fff;
+}
+
+.company-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.edit-company-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #2563eb;
+  background: transparent;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-company-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #dc2626;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-company-btn:hover {
+  background: #b91c1c;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .create-job-header h1 {
+    font-size: 26px;
+  }
+
+  .create-job-form {
+    padding: 22px;
+  }
+}

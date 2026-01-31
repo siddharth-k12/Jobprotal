@@ -1,0 +1,44 @@
+.edit-job-page {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.edit-job-page h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0d2b3e;
+}
+
+.edit-job-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.edit-job-form input,
+.edit-job-form textarea,
+.edit-job-form select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #dfe7ee;
+  font-size: 14px;
+}
+
+.edit-job-form textarea {
+  resize: vertical;
+}
+
+.update-btn {
+  background: #c9f33c;
+  border: none;
+  padding: 12px;
+  border-radius: 30px;
+  font-weight: 800;
+  cursor: pointer;
+  color: #0d2b3e;
+}
+
+.update-btn:active {
+  transform: scale(0.96);
+}

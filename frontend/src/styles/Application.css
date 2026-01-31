@@ -1,0 +1,87 @@
+.apply-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.apply-card {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Job Preview */
+.job-preview {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.job-preview h2 {
+  font-size: 20px;
+  color: #111827;
+}
+
+.company {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.location {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Form */
+.apply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.file-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.file-label input {
+  display: block;
+  margin-top: 8px;
+}
+
+.file-name {
+  font-size: 13px;
+  color: #374151;
+}
+
+/* Button */
+.apply-form button {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.apply-form button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Loading */
+.loading-text {
+  text-align: center;
+  margin-top: 60px;
+  color: #6b7280;
+}

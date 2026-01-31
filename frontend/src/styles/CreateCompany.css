@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --primary: #c9f33c;
+  --heading: #0d2b3e;
+  --text: #5b6b75;
+  --border: #e7edf2;
+}
+
+/* PAGE */
+.company-page {
+  min-height: 100vh;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Inter", sans-serif;
+}
+
+/* CARD */
+.company-card {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 34px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+/* HEADINGS */
+.company-card h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--heading);
+}
+
+.company-subtext {
+  font-size: 14px;
+  color: var(--text);
+  margin-top: 6px;
+  margin-bottom: 24px;
+}
+
+/* FORM */
+.company-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.company-card input,
+.company-card textarea {
+  padding: 13px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  outline: none;
+  color: var(--heading);
+}
+
+.company-card textarea {
+  resize: none;
+}
+
+/* FOCUS */
+.company-card input:focus,
+.company-card textarea:focus {
+  border-color: var(--primary);
+}
+
+/* BUTTON */
+.company-btn {
+  margin-top: 10px;
+  background: var(--primary);
+  border: none;
+  padding: 13px;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--heading);
+}
+
+.company-btn:active {
+  transform: scale(0.96);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .company-card {
+    padding: 26px;
+  }
+
+  .company-card h1 {
+    font-size: 24px;
+  }
+}

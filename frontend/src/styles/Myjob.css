@@ -1,0 +1,124 @@
+.myjobs-page {
+  max-width: 1000px;
+  margin: auto;
+  padding: 24px;
+}
+
+.myjobs-page h2 {
+  margin-bottom: 20px;
+  color: #0d2b3e;
+}
+
+.myjobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.myjob-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.job-info h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.job-type {
+  font-size: 13px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.job-desc {
+  font-size: 14px;
+  color: #4b5563;
+  margin: 6px 0;
+}
+
+.resume-link {
+  font-size: 13px;
+  text-decoration: none;
+  color: #047857;
+  font-weight: 600;
+}
+
+.job-status {
+  text-align: right;
+}
+
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status.applied {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.status.shortlisted {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.applied-date {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.loading-text,
+.empty-text {
+  text-align: center;
+  margin-top: 40px;
+  color: #6b7280;
+}
+.job-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.job-tabs button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #e5e7eb;
+  font-weight: 600;
+}
+
+.job-tabs button.active {
+  background: #2563eb;
+  color: white;
+}
+.view-btn {
+  margin-top: 8px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.view-btn:hover {
+  opacity: 0.9;
+}
