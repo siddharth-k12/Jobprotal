@@ -16,7 +16,8 @@ app.use(cookieParser())
 
 app.use(cors({
   origin: [
-    "https://jobprotal-frontend-tptp.onrender.com"
+    "http://localhost:5173",
+    // "https://your-frontend.onrender.com"
   ],
   credentials: true
 }));
