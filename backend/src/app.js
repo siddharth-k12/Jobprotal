@@ -16,7 +16,7 @@ app.use(cookieParser())
 
 app.use(cors({
   origin: [
-    "https://jobprotal-frontend-tptp.onrender.com";
+    "https://jobprotal-frontend-tptp.onrender.com"
   ],
   credentials: true
 }));

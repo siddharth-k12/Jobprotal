@@ -48,7 +48,14 @@ const registerHandler = asyncHandler(async(req,res)=>{
     })
 
     const token = jwt.sign({id:newUser._id},process.env.JWT_SECRET,{expiresIn:"5m"})
-    res.cookie('token',token)
+
+   res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None"
+});
+
+
     return res.status(201).json({
         message:"User is created succesfully",
         user:{
@@ -90,7 +97,12 @@ const loginController = asyncHandler(async(req,res)=>{
     }
 
     const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"1d"});
-    res.cookie('token',token)
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None"
+});
+
 
     return res.status(200).json({
         message:"User is login",
