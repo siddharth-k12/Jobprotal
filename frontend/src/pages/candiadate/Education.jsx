@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { candidateApi, userApi } from "../../api/api";
 import "../../styles/CandidateAll.css";
+import {toast} from "react-toastify"
 
 const Education = () => {
   const navigate = useNavigate();
@@ -58,7 +59,8 @@ const Education = () => {
     try {
       await candidateApi.post("/profile-education", form);
      
-      alert("Education saved successfully");
+      // alert("Education saved successfully");
+      toast.success("Education saved successfully")
        navigate("/experience");
     } catch (error) {
       console.error("Education save error:", error);

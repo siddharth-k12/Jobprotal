@@ -149,9 +149,12 @@ const Profile = () => {
     <p>No experience added</p>
   )}
 
- {profile?.experience > 0 ? <button onClick={() => navigate("/experience")}>
+ {profile?.experience?.length === 0 && (
+  <button onClick={() => navigate("/experience")}>
     Add Experience
-  </button>: null}
+  </button>
+)}
+
 </section>
 
 

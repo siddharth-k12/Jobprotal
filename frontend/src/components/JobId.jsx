@@ -26,6 +26,7 @@ const JobId = () => {
                
       } catch (err) {
         alert("Failed to load job");
+        navigate('/')
       } finally {
         setLoading(false);
       }
