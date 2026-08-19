@@ -31,6 +31,7 @@ app.use('/job',jobRouter)
 app.use('/application',applicationRouter)
 app.use('/saved',savedRoute)
 
+
 //global erro handle
 app.use((err,req,res,next)=>{
     console.log(err);
