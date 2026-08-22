@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      index: true,
     },
 
     phoneNumber: {
@@ -36,7 +35,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["candidate", "recruiter"],
       default: "candidate",
-      index: true,
     },
   },
   {
@@ -44,9 +42,11 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Compound index for common user queries
-userSchema.index({ role: 1, createdAt: -1 });
+userSchema.index({
+  role: 1,
+  createdAt: -1,
+});
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("user", userSchema);
 
 module.exports = User;

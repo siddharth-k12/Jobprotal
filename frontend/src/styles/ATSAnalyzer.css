@@ -1,0 +1,601 @@
+/* =====================================================
+   ATS ANALYZER PAGE
+===================================================== */
+
+.ats-analyzer-page {
+    min-height: calc(100vh - 70px);
+    background: #f5f7fb;
+    padding: 50px 6% 80px;
+    color: #172033;
+}
+
+.ats-analyzer-container {
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.ats-analyzer-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.ats-analyzer-header h1 {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.2;
+    font-weight: 750;
+    color: #172033;
+}
+
+.ats-analyzer-header p {
+    margin: 10px 0 0;
+    color: #667085;
+    font-size: 16px;
+}
+
+
+/* =====================================================
+   UPLOAD CARD
+===================================================== */
+
+.ats-upload-card {
+    background: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 6px 24px rgba(16, 24, 40, 0.06);
+}
+
+
+/* =====================================================
+   UPLOAD BOX
+===================================================== */
+
+.ats-upload-box {
+    min-height: 230px;
+    border: 2px dashed #c5cad3;
+    border-radius: 14px;
+    background: #fafbfc;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.ats-upload-box:hover {
+    border-color: #172033;
+    background: #f7f8fa;
+}
+
+.ats-upload-box:active {
+    transform: scale(0.995);
+}
+
+
+/* =====================================================
+   UPLOAD ICON
+===================================================== */
+
+.upload-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eef1f5;
+
+    font-size: 28px;
+
+    margin-bottom: 15px;
+}
+
+.ats-upload-box h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 650;
+}
+
+.ats-upload-box p {
+    margin: 8px 0 4px;
+    color: #667085;
+    font-size: 15px;
+}
+
+.ats-upload-box span {
+    color: #98a2b3;
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   SELECTED RESUME
+===================================================== */
+
+.selected-resume {
+    margin-top: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 16px 18px;
+
+    background: #f8f9fc;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+}
+
+.selected-resume strong {
+    display: block;
+
+    max-width: 650px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 15px;
+    color: #172033;
+}
+
+.selected-resume p {
+    margin: 5px 0 0;
+
+    color: #667085;
+    font-size: 13px;
+}
+
+.selected-resume button {
+    flex-shrink: 0;
+
+    border: 1px solid #d0d5dd;
+    background: #ffffff;
+    color: #344054;
+
+    padding: 8px 14px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.selected-resume button:hover {
+    background: #f2f4f7;
+    border-color: #98a2b3;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.ats-error {
+    margin-top: 18px;
+
+    padding: 13px 15px;
+
+    border-radius: 9px;
+
+    background: #fef3f2;
+    border: 1px solid #fecdca;
+
+    color: #b42318;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   ANALYZE BUTTON
+===================================================== */
+
+.ats-analyze-btn {
+    width: 100%;
+
+    margin-top: 22px;
+
+    padding: 14px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #172033;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.ats-analyze-btn:hover:not(:disabled) {
+    background: #0d1524;
+}
+
+.ats-analyze-btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.ats-analyze-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   RESULT CONTAINER
+===================================================== */
+
+.ats-result {
+    margin-top: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+    border-radius: 18px;
+
+    padding: 32px;
+
+    box-shadow: 0 6px 24px rgba(16, 24, 40, 0.06);
+}
+
+.ats-result > h2 {
+    margin: 0;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   SCORE CARD
+===================================================== */
+
+.ats-score-card {
+    margin-top: 24px;
+
+    min-height: 180px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: #f8f9fc;
+
+    border: 1px solid #eaecf0;
+
+    text-align: center;
+}
+
+.ats-score-card span {
+    color: #667085;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ats-score-card strong {
+    margin-top: 4px;
+
+    font-size: 58px;
+    line-height: 1;
+
+    font-weight: 750;
+
+    color: #172033;
+}
+
+.ats-score-card small {
+    margin-top: 7px;
+
+    color: #98a2b3;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   RESULT SECTION
+===================================================== */
+
+.ats-result-section {
+    margin-top: 30px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid #eaecf0;
+}
+
+.ats-result-section h3 {
+    margin: 0 0 15px;
+
+    font-size: 18px;
+    font-weight: 650;
+
+    color: #172033;
+}
+
+.ats-result-section > p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   SKILL TAGS
+===================================================== */
+
+.ats-tags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+}
+
+.ats-tags span {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    background: #f2f4f7;
+
+    border: 1px solid #eaecf0;
+
+    color: #344054;
+
+    font-size: 13px;
+    font-weight: 550;
+}
+
+
+/* =====================================================
+   RESUME SECTIONS
+===================================================== */
+
+.ats-sections {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+.ats-sections > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 13px 14px;
+
+    border-radius: 10px;
+
+    border: 1px solid #eaecf0;
+
+    background: #fafbfc;
+}
+
+.ats-sections > div span {
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ats-sections strong {
+    font-size: 14px;
+
+    text-transform: capitalize;
+
+    color: #344054;
+}
+
+
+/* =====================================================
+   SECTION FOUND
+===================================================== */
+
+.section-found {
+    border-color: #d1fadf !important;
+    background: #f6fef9 !important;
+}
+
+.section-found span {
+    background: #dcfae6;
+    color: #067647;
+}
+
+
+/* =====================================================
+   SECTION MISSING
+===================================================== */
+
+.section-missing {
+    border-color: #fecdca !important;
+    background: #fffafa !important;
+}
+
+.section-missing span {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+
+/* =====================================================
+   ISSUES / SUGGESTIONS
+===================================================== */
+
+.ats-result-section ul,
+.ats-result-section ol {
+    margin: 0;
+
+    padding-left: 22px;
+}
+
+.ats-result-section li {
+    margin-bottom: 10px;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+.ats-result-section li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .ats-analyzer-page {
+        padding: 30px 16px 60px;
+    }
+
+    .ats-analyzer-header {
+        margin-bottom: 25px;
+    }
+
+    .ats-analyzer-header h1 {
+        font-size: 27px;
+    }
+
+    .ats-analyzer-header p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .ats-upload-card,
+    .ats-result {
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    .ats-upload-box {
+        min-height: 210px;
+    }
+
+    .selected-resume {
+        align-items: flex-start;
+    }
+
+    .selected-resume strong {
+        max-width: 220px;
+    }
+
+    .ats-score-card {
+        min-height: 160px;
+    }
+
+    .ats-score-card strong {
+        font-size: 48px;
+    }
+
+    .ats-sections {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+    .ats-analyzer-header h1 {
+        font-size: 24px;
+    }
+
+    .ats-upload-box {
+        min-height: 190px;
+        padding: 20px;
+    }
+
+    .upload-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+
+    .ats-upload-box h2 {
+        font-size: 18px;
+    }
+
+    .selected-resume {
+        flex-direction: column;
+    }
+
+    .selected-resume button {
+        width: 100%;
+    }
+
+    .selected-resume strong {
+        max-width: 100%;
+    }
+
+    .ats-result > h2 {
+        font-size: 21px;
+    }
+
+    .ats-result-section h3 {
+        font-size: 17px;
+    }
+}

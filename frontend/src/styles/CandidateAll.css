@@ -107,3 +107,128 @@
     font-size: 20px;
   }
 }
+/* =========================
+   RESUME
+========================= */
+
+.resume-empty {
+  margin-top: 25px;
+}
+
+.resume-upload-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.selected-file {
+  font-size: 14px;
+  color: #555;
+}
+
+.resume-section {
+  margin-top: 25px;
+}
+
+.resume-card {
+  margin-top: 15px;
+  padding: 18px;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+}
+
+.resume-info h4 {
+  margin: 0 0 8px;
+}
+
+.resume-info p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+/* =========================
+   RESUME ACTIONS
+========================= */
+
+.resume-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.resume-actions button,
+.resume-view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  padding: 8px 14px;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  text-decoration: none;
+}
+
+.resume-view-btn {
+  background: #0d2b3e;
+  color: white;
+}
+
+.resume-view-btn:hover {
+  opacity: 0.9;
+}
+
+.resume-actions button {
+  background: #eee;
+  color: #333;
+}
+
+.resume-actions button:hover {
+  background: #ddd;
+}
+
+/* =========================
+   UPLOAD ANOTHER
+========================= */
+
+.upload-another {
+  margin-top: 30px;
+  padding-top: 20px;
+
+  border-top: 1px solid #ddd;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .resume-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .resume-actions {
+    width: 100%;
+  }
+
+  .resume-actions button,
+  .resume-view-btn {
+    flex: 1;
+  }
+}

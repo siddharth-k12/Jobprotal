@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Nav";
-import { jobApi, savedApi, applicationApi } from "../api/api";
+import {
+  jobApi,
+  savedApi,
+  applicationApi,
+} from "../api/api";
+import { toast } from "react-toastify";
 import "../styles/JobId.css";
 
 const JobId = () => {
@@ -13,143 +18,247 @@ const JobId = () => {
 
   const [applied, setApplied] = useState(false);
   const [saved, setSaved] = useState(false);
+
   const [saving, setSaving] = useState(false);
 
-  /* =========================
-     FETCH JOB
-  ========================= */
+  /*
+   * =========================
+   * FETCH JOB + STATUS
+   * =========================
+   */
   useEffect(() => {
-    async function fetchJob() {
+    const fetchJobData = async () => {
       try {
-        const res = await jobApi.get(`/${jobId}`);
-        setJob(res.data.job);
-               
-      } catch (err) {
-        alert("Failed to load job");
-        navigate('/')
+        setLoading(true);
+
+        const [
+          jobResponse,
+          appliedResponse,
+          savedResponse,
+        ] = await Promise.all([
+          jobApi.get(`/${jobId}`),
+          applicationApi.get(`/check/${jobId}`),
+          savedApi.get(`/check/${jobId}`),
+        ]);
+
+        setJob(jobResponse.data.job);
+
+        setApplied(
+          appliedResponse.data.applied === true
+        );
+
+        setSaved(
+          savedResponse.data.saved === true
+        );
+      } catch (error) {
+        console.error(
+          "Failed to load job:",
+          error
+        );
+
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to load job"
+        );
+
+        navigate("/");
       } finally {
         setLoading(false);
       }
-    }
-    fetchJob();
-  }, [jobId]);
+    };
 
-  /* =========================
-     CHECK APPLIED
-  ========================= */
-  useEffect(() => {
-    async function checkApplied() {
-      try {
-        const res = await applicationApi.get(`/check/${jobId}`);
-        setApplied(res.data.applied === true);
-      } catch (err) {
-        console.error("Apply check failed");
-      }
+    if (jobId) {
+      fetchJobData();
     }
-    checkApplied();
-  }, [jobId]);
+  }, [jobId, navigate]);
 
-  /* =========================
-     CHECK SAVED
-  ========================= */
-  useEffect(() => {
-    async function checkSaved() {
-      try {
-        const res = await savedApi.get(`/check/${jobId}`);
-        setSaved(res.data.saved === true);
-      } catch (err) {
-        console.error("Save check failed");
-      }
+  /*
+   * =========================
+   * SAVE JOB
+   * =========================
+   */
+  const handleSaveJob = async () => {
+    if (saved || saving) {
+      return;
     }
-    checkSaved();
-  }, [jobId]);
-
-  /* =========================
-     SAVE JOB
-  ========================= */
-  async function handleSaveJob() {
-    if (saved) return;
 
     try {
       setSaving(true);
-      await savedApi.post(`/create/${jobId}`);
-      setSaved(true); // 🔥 instant UI update
-    } catch (err) {
-      alert("Unable to save job");
+
+      await savedApi.post(
+        `/create/${jobId}`
+      );
+
+      setSaved(true);
+
+      toast.success("Job saved successfully");
+    } catch (error) {
+      console.error(
+        "Save job error:",
+        error
+      );
+
+      toast.error(
+        error.response?.data?.message ||
+          "Unable to save job"
+      );
     } finally {
       setSaving(false);
     }
+  };
+
+  /*
+   * =========================
+   * APPLY
+   * =========================
+   */
+  const handleApply = () => {
+    if (applied) {
+      return;
+    }
+
+    if (job.statusNow === "closed") {
+      return;
+    }
+
+    navigate(`/application/${job._id}`);
+  };
+
+  /*
+   * =========================
+   * UI STATES
+   * =========================
+   */
+
+  if (loading) {
+    return (
+      <p className="job-loading">
+        Loading job...
+      </p>
+    );
   }
 
-  /* =========================
-     UI STATES
-  ========================= */
-  if (loading) return <p className="job-loading">Loading...</p>;
-  if (!job) return <p className="job-loading">Job not found</p>;
+  if (!job) {
+    return (
+      <p className="job-loading">
+        Job not found
+      </p>
+    );
+  }
+
+  const isClosed =
+    job.statusNow === "closed";
 
   return (
     <>
       <Navbar />
 
       <div className="job-page">
+
         {/* HEADER */}
         <div className="job-header">
           <h1>{job.title}</h1>
-          <span className={`job-status ${job.statusNow}`}>
+
+          <span
+            className={`job-status ${job.statusNow}`}
+          >
             {job.statusNow}
           </span>
         </div>
 
         {/* META */}
         <div className="job-meta">
-          <span>📍 {job.location}</span>
-          <span>💼 {job.jobType}</span>
-          <span>🏢 {job.workMode}</span>
-          <span>🎯 {job.exprienceLevel}</span>
-          <span>💰 {job.salaryRange}</span>
+          <span>
+            📍 {job.location}
+          </span>
+
+          <span>
+            💼 {job.jobType}
+          </span>
+
+          <span>
+            🏢 {job.workMode}
+          </span>
+
+          <span>
+            🎯 {job.exprienceLevel}
+          </span>
+
+          <span>
+            💰 {job.salaryRange}
+          </span>
         </div>
 
         {/* DESCRIPTION */}
         <section>
           <h3>Job Description</h3>
-          <p>{job.description}</p>
+
+          <p>
+            {job.description}
+          </p>
         </section>
 
         {/* REQUIREMENTS */}
         <section>
           <h3>Requirements</h3>
-          <ul>
-            {job.requirement?.map((req, index) => (
-              <li key={index}>{req}</li>
-            ))}
-          </ul>
+
+          {job.requirement?.length > 0 ? (
+            <ul>
+              {job.requirement.map(
+                (requirement, index) => (
+                  <li key={index}>
+                    {requirement}
+                  </li>
+                )
+              )}
+            </ul>
+          ) : (
+            <p>
+              No specific requirements
+              provided.
+            </p>
+          )}
         </section>
 
         {/* ACTIONS */}
         <div className="job-actions">
+
           {/* APPLY */}
           <button
             className={`apply-btn ${
-              applied || job.statusNow === "CLOSED" ? "disabled" : ""
+              applied || isClosed
+                ? "disabled"
+                : ""
             }`}
-            disabled={applied || job.statusNow === "CLOSED"}
-            onClick={() => navigate(`/application/${job._id}`)}
+            disabled={
+              applied || isClosed
+            }
+            onClick={handleApply}
           >
             {applied
               ? "Already Applied"
-              : job.statusNow === "CLOSED"
+              : isClosed
               ? "Applications Closed"
-              : "Apply Now"}
+              : "Apply Now "}
           </button>
 
           {/* SAVE */}
           <button
-            className={`save-btn ${saved ? "saved" : ""}`}
-            disabled={saved || saving}
+            className={`save-btn ${
+              saved ? "saved" : ""
+            }`}
+            disabled={
+              saved || saving
+            }
             onClick={handleSaveJob}
           >
-            {saved ? "Saved" : saving ? "Saving..." : "Save Job"}
+            {saved
+              ? "Saved"
+              : saving
+              ? "Saving..."
+              : "Save Job"}
           </button>
+
         </div>
       </div>
     </>

@@ -24,7 +24,12 @@ const Register = () => {
           navigate("/user-job")
         } catch (error) {
           console.log(error);
-          toast.error(error.response.data.message)
+           const message =
+    error.response?.data?.errors?.[0] ||
+    error.response?.data?.message ||
+    "Registration failed";
+
+  toast.error(message);
         }
     }
 

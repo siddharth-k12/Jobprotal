@@ -7,9 +7,15 @@ import { useNavigate } from "react-router-dom";
 const MyJobs = () => {
   const [applications, setApplications] = useState([]);
   const [savedJobs, setSavedJobs] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("applications");
-const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
+  // =====================================================
+  // FETCH DATA WHEN TAB CHANGES
+  // =====================================================
 
   useEffect(() => {
     if (activeTab === "applications") {
@@ -19,63 +25,119 @@ const navigate = useNavigate();
     }
   }, [activeTab]);
 
+  // =====================================================
+  // FETCH APPLICATIONS
+  // =====================================================
+
   async function fetchApplications() {
     try {
       setLoading(true);
+
       const res = await applicationApi.get("/");
-      setApplications(res.data.check || []);
-      // console.log(res)
+
+      console.log("Applications response:", res.data);
+
+      // IMPORTANT:
+      // Backend now returns:
+      // res.data.applications
+      setApplications(res.data.applications || []);
     } catch (err) {
-      console.error("Applications load failed", err);
+      console.error(
+        "Applications load failed:",
+        err.response?.data || err
+      );
+
+      setApplications([]);
     } finally {
       setLoading(false);
     }
   }
 
- async function fetchSavedJobs() {
-  try {
-    setLoading(true);
-    const res = await savedApi.get("/");
-    setSavedJobs(res.data.savedJob || []);
-    // console.log(res.data.savedJob);
-  } catch (err) {
-    console.error("Saved jobs load failed", err);
-  } finally {
-    setLoading(false);
-  }
-}
+  // =====================================================
+  // FETCH SAVED JOBS
+  // =====================================================
 
+  async function fetchSavedJobs() {
+    try {
+      setLoading(true);
+
+      const res = await savedApi.get("/");
+
+      console.log("Saved jobs response:", res.data);
+
+      setSavedJobs(res.data.savedJob || []);
+    } catch (err) {
+      console.error(
+        "Saved jobs load failed:",
+        err.response?.data || err
+      );
+
+      setSavedJobs([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // =====================================================
+  // RENDER
+  // =====================================================
 
   return (
     <>
       <Navbar />
 
       <div className="myjobs-page">
+
         <h2>My Jobs Dashboard</h2>
 
-        {/* Tabs */}
+        {/* =================================================
+            TABS
+        ================================================= */}
+
         <div className="job-tabs">
+
           <button
-            className={activeTab === "applications" ? "active" : ""}
-            onClick={() => setActiveTab("applications")}
+            className={
+              activeTab === "applications"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveTab("applications")
+            }
           >
             My Jobs
           </button>
 
           <button
-            className={activeTab === "saved" ? "active" : ""}
-            onClick={() => setActiveTab("saved")}
+            className={
+              activeTab === "saved"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveTab("saved")
+            }
           >
             Saved Jobs
           </button>
+
         </div>
 
-        {/* Loading */}
+        {/* =================================================
+            LOADING
+        ================================================= */}
+
         {loading && (
-          <p className="loading-text">Loading...</p>
+          <p className="loading-text">
+            Loading...
+          </p>
         )}
 
-        {/* Applications */}
+        {/* =================================================
+            APPLICATIONS EMPTY
+        ================================================= */}
+
         {!loading &&
           activeTab === "applications" &&
           applications.length === 0 && (
@@ -84,88 +146,189 @@ const navigate = useNavigate();
             </p>
           )}
 
+        {/* =================================================
+            APPLICATIONS LIST
+        ================================================= */}
+
         {!loading &&
           activeTab === "applications" &&
           applications.length > 0 && (
+
             <div className="myjobs-list">
+
               {applications.map((app) => (
-                <div key={app._id} className="myjob-card">
+
+                <div
+                  key={app._id}
+                  className="myjob-card"
+                >
+
+                  {/* ===============================
+                      JOB INFORMATION
+                  =============================== */}
+
                   <div className="job-info">
-                    <h3>{app.jobId?.title}</h3>
+
+                    <h3>
+                      {app.jobId?.title || "Job"}
+                    </h3>
 
                     <p className="job-type">
-                      {app.jobId?.jobType}
+                      {app.jobId?.jobType || "N/A"}
                     </p>
 
                     <p className="job-desc">
-                      {app.jobId?.description?.slice(0, 120)}...
+                      {app.jobId?.description
+                        ? `${app.jobId.description.slice(
+                            0,
+                            120
+                          )}...`
+                        : "No description available"}
                     </p>
 
-                    <a
-                      href={app.resume?.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="resume-link"
-                    >
-                      📄 {app.resume?.fileName}
-                    </a>
+                    {/* ===============================
+                        LOCATION
+                    =============================== */}
+
+                    {app.jobId?.location && (
+                      <p className="job-location">
+                        📍 {app.jobId.location}
+                      </p>
+                    )}
+
+                    {/* ===============================
+                        RESUME
+                    =============================== */}
+
+                    {app.resumeId && (
+                      <a
+                        href={app.resumeId.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="resume-link"
+                      >
+                        📄 {app.resumeId.fileName}
+                      </a>
+                    )}
+
                   </div>
 
+                  {/* ===============================
+                      APPLICATION STATUS
+                  =============================== */}
+
                   <div className="job-status">
+
                     <span
-                      className={`status ${app.statusNow}`}
+                      className={`status ${
+                        app.statusNow || ""
+                      }`}
                     >
-                      {app.statusNow}
+                      {app.statusNow || "applied"}
                     </span>
 
                     <p className="applied-date">
                       Applied on{" "}
-                      {new Date(
-                        app.appliedAt
-                      ).toLocaleDateString()}
+                      {app.appliedAt
+                        ? new Date(
+                            app.appliedAt
+                          ).toLocaleDateString()
+                        : "N/A"}
                     </p>
+
                   </div>
+
                 </div>
+
               ))}
+
             </div>
           )}
 
-        {/* Saved Jobs */}
+        {/* =================================================
+            SAVED JOBS EMPTY
+        ================================================= */}
+
         {!loading &&
           activeTab === "saved" &&
           savedJobs.length === 0 && (
+
             <p className="empty-text">
               No saved jobs yet.
             </p>
+
           )}
 
+        {/* =================================================
+            SAVED JOBS LIST
+        ================================================= */}
+
         {!loading &&
-  activeTab === "saved" &&
-  savedJobs.length > 0 && (
-    <div className="myjobs-list">
-      {savedJobs.map((item) => (
-        <div key={item._id} className="myjob-card">
-          <div className="job-info">
-            <h3>{item.jobId?.title}</h3>
+          activeTab === "saved" &&
+          savedJobs.length > 0 && (
 
-            <p className="job-type">
-              {item.jobId?.jobType}
-            </p>
+            <div className="myjobs-list">
 
-            <p className="job-desc">
-              {item.jobId?.description?.slice(0, 120)}...
-            </p>
-          </div> 
-          <button
-    className="view-btn"
-    onClick={() => navigate(`/job/${item.jobId._id}`)}
-  > View Job
-  </button>
-        </div>
-       
-      ))}
-    </div>
-  )}
+              {savedJobs.map((item) => (
+
+                <div
+                  key={item._id}
+                  className="myjob-card"
+                >
+
+                  <div className="job-info">
+
+                    <h3>
+                      {item.jobId?.title ||
+                        "Job"}
+                    </h3>
+
+                    <p className="job-type">
+                      {item.jobId?.jobType ||
+                        "N/A"}
+                    </p>
+
+                    <p className="job-desc">
+                      {item.jobId?.description
+                        ? `${item.jobId.description.slice(
+                            0,
+                            120
+                          )}...`
+                        : "No description available"}
+                    </p>
+
+                    {item.jobId?.location && (
+                      <p className="job-location">
+                        📍 {item.jobId.location}
+                      </p>
+                    )}
+
+                  </div>
+
+                  {/* ===============================
+                      VIEW JOB
+                  =============================== */}
+
+                  {item.jobId?._id && (
+                    <button
+                      className="view-btn"
+                      onClick={() =>
+                        navigate(
+                          `/job/${item.jobId._id}`
+                        )
+                      }
+                    >
+                      View Job
+                    </button>
+                  )}
+
+                </div>
+
+              ))}
+
+            </div>
+
+          )}
 
       </div>
     </>

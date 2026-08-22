@@ -1,157 +1,612 @@
-/* =============================
-   Base Layout
-============================= */
+/* =====================================================
+   PAGE
+===================================================== */
+
+.profile-page {
+    min-height: calc(100vh - 70px);
+    background: #f5f7fb;
+    padding: 40px 6% 80px;
+    color: #172033;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.profile-header {
+    max-width: 1100px;
+    margin: 0 auto 28px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.profile-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    color: #667085;
+}
+
+.profile-header h1 {
+    margin: 0;
+
+    font-size: 32px;
+    font-weight: 750;
+
+    color: #172033;
+}
+
+.profile-header p {
+    margin: 8px 0 0;
+
+    color: #667085;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   TOP LOGOUT
+===================================================== */
+
+.profile-logout-btn {
+    padding: 10px 18px;
+
+    border: 1px solid #f04438;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #d92d20;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.profile-logout-btn:hover {
+    background: #d92d20;
+    color: #ffffff;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
 
 .profile-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  background-color: #f8f9fb;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
 }
 
-/* =============================
-   Card Style
-============================= */
+
+/* =====================================================
+   CARD
+===================================================== */
 
 .profile-card {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 20px 24px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 16px rgba(16, 24, 40, 0.045);
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
 }
 
-/* =============================
-   Typography
-============================= */
-
-.profile-card h2 {
-  font-size: 22px;
-  font-weight: 600;
-  color: #1f2937;
+.user-card,
+.candidate-card,
+.resume-card {
+    grid-column: span 2;
 }
 
-.profile-card h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
+
+/* =====================================================
+   CARD HEADING
+===================================================== */
+
+.card-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid #eaecf0;
 }
 
-.profile-card p {
-  font-size: 14px;
-  color: #4b5563;
-  line-height: 1.5;
+.card-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #f2f4f7;
+
+    font-size: 19px;
 }
 
-/* =============================
-   Buttons
-============================= */
+.card-heading h2 {
+    margin: 0;
 
-.profile-card button {
-  align-self: flex-start;
-  margin-top: 10px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #2563eb;
-  background-color: transparent;
-  border: 1px solid #2563eb;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    font-size: 18px;
+    font-weight: 700;
+
+    color: #172033;
 }
 
-.profile-card button:hover {
-  background-color: #2563eb;
-  color: #ffffff;
+.card-heading p {
+    margin: 4px 0 0;
+
+    color: #667085;
+
+    font-size: 13px;
 }
 
-/* =============================
-   Skills
-============================= */
+
+/* =====================================================
+   USER INFORMATION
+===================================================== */
+
+.user-info {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+.info-item {
+    padding: 14px;
+
+    border-radius: 10px;
+
+    background: #f8f9fc;
+
+    border: 1px solid #eaecf0;
+}
+
+.info-item span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #667085;
+
+    font-size: 12px;
+}
+
+.info-item strong {
+    display: block;
+
+    color: #344054;
+
+    font-size: 14px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =====================================================
+   PROFESSIONAL PROFILE
+===================================================== */
+
+.professional-info h3 {
+    margin: 0;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #172033;
+}
+
+.professional-info p {
+    margin: 7px 0 0;
+
+    color: #667085;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   SKILLS
+===================================================== */
+
+.skills-section {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+.section-label {
+    font-size: 12px;
+
+    font-weight: 650;
+
+    color: #667085;
+}
 
 .skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
 }
 
 .skill-chip {
-  padding: 6px 10px;
-  font-size: 12px;
-  border-radius: 20px;
-  background-color: #eef2ff;
-  color: #3730a3;
-  font-weight: 500;
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    background: #eef2ff;
+
+    border: 1px solid #e0e7ff;
+
+    color: #3730a3;
+
+    font-size: 12px;
+
+    font-weight: 600;
 }
 
-/* =============================
-   Education / Experience Items
-============================= */
+.empty-text {
+    color: #98a2b3;
 
-.edu-item,
-.exp-item {
-  padding: 10px 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.edu-item:last-child,
-.exp-item:last-child {
-  border-bottom: none;
-}
-
-.edu-item strong,
-.exp-item strong {
-  font-size: 14px;
-  color: #111827;
+    font-size: 13px;
 }
 
 
-.profile-card .logout-btn {
-  background-color: transparent;
-  border: 1px solid #dc2626;
-  color: #dc2626;
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.outline-btn {
+    align-self: flex-start;
+
+    padding: 9px 14px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
-.profile-card .logout-btn:hover {
-  background-color: #dc2626;
-  color: #ffffff;
+.outline-btn:hover {
+    background: #f2f4f7;
+
+    border-color: #98a2b3;
 }
 
-/* =============================
-   Responsive Design
-============================= */
+.small-btn {
+    align-self: flex-start;
 
-/* Tablets */
-@media (min-width: 768px) {
-  .profile-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    margin-top: 7px;
 
-  /* Full width sections */
-  .profile-card:nth-child(1),
-  .profile-card:nth-child(2) {
-    grid-column: span 2;
-  }
+    padding: 6px 10px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #475467;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
 }
 
-/* Desktops */
-@media (min-width: 1024px) {
-  .profile-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.small-btn:hover {
+    background: #f2f4f7;
+}
 
-  .profile-card:nth-child(1) {
-    grid-column: span 3;
-  }
 
-  .profile-card:nth-child(2) {
-    grid-column: span 2;
-  }
+/* =====================================================
+   EDUCATION / EXPERIENCE TIMELINE
+===================================================== */
+
+.timeline-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0;
+}
+
+.timeline-item {
+    position: relative;
+
+    display: flex;
+
+    gap: 13px;
+
+    padding-bottom: 18px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-dot {
+    flex-shrink: 0;
+
+    width: 9px;
+    height: 9px;
+
+    margin-top: 5px;
+
+    border-radius: 50%;
+
+    background: #172033;
+}
+
+.timeline-content {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.timeline-content strong {
+    color: #172033;
+
+    font-size: 14px;
+}
+
+.timeline-content span {
+    color: #475467;
+
+    font-size: 13px;
+}
+
+.timeline-content small {
+    color: #98a2b3;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-state {
+    margin: 0;
+
+    padding: 14px;
+
+    border-radius: 9px;
+
+    background: #f8f9fc;
+
+    color: #98a2b3;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   RESUME / ATS ACTIONS
+===================================================== */
+
+.profile-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.action-card {
+    min-height: 100px;
+
+    padding: 17px;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 12px;
+
+    background: #fafbfc;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.action-card:hover {
+    background: #ffffff;
+
+    border-color: #98a2b3;
+
+    transform: translateY(-2px);
+}
+
+.action-card strong {
+    color: #172033;
+
+    font-size: 14px;
+}
+
+.action-card span {
+    color: #667085;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.profile-loading {
+    min-height: calc(100vh - 70px);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #f5f7fb;
+
+    color: #667085;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 850px) {
+
+    .profile-page {
+        padding: 30px 20px 60px;
+    }
+
+    .user-info {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-actions {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .profile-page {
+        padding: 25px 15px 50px;
+    }
+
+    .profile-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        margin-bottom: 22px;
+    }
+
+    .profile-header h1 {
+        font-size: 27px;
+    }
+
+    .profile-logout-btn {
+        width: 100%;
+    }
+
+    .profile-container {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .user-card,
+    .candidate-card,
+    .resume-card {
+        grid-column: span 1;
+    }
+
+    .profile-card {
+        padding: 19px;
+
+        border-radius: 14px;
+    }
+
+    .card-heading h2 {
+        font-size: 17px;
+    }
+
+    .professional-info h3 {
+        font-size: 18px;
+    }
+
+    .outline-btn {
+        width: 100%;
+    }
+
+    .small-btn {
+        width: auto;
+    }
+
 }

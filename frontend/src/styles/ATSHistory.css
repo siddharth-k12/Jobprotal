@@ -1,0 +1,206 @@
+.ats-history-page {
+    min-height: calc(100vh - 70px);
+    background: #f6f8fb;
+    padding: 50px 7%;
+}
+
+.ats-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 35px;
+}
+
+.ats-history-header h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    color: #172033;
+}
+
+.ats-history-header p {
+    margin: 0;
+    color: #697386;
+}
+
+.new-ats-btn {
+    border: none;
+    background: #172033;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.new-ats-btn:hover {
+    opacity: 0.9;
+}
+
+.ats-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ats-history-card {
+    background: white;
+    border: 1px solid #e4e8ee;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.ats-card-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.ats-card-main h2 {
+    margin: 0 0 8px;
+    font-size: 19px;
+    color: #172033;
+}
+
+.ats-job-id {
+    margin: 0 0 5px;
+    font-size: 13px;
+    color: #7b8494;
+}
+
+.ats-date {
+    margin: 0;
+    font-size: 13px;
+    color: #9aa2af;
+}
+
+.ats-score {
+    min-width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.ats-score strong {
+    font-size: 25px;
+}
+
+.ats-score span {
+    font-size: 12px;
+}
+
+.score-high {
+    background: #e7f8ee;
+    color: #15803d;
+}
+
+.score-medium {
+    background: #fff7df;
+    color: #b77900;
+}
+
+.score-low {
+    background: #feecec;
+    color: #dc2626;
+}
+
+.ats-card-info {
+    display: flex;
+    gap: 15px;
+    margin-top: 22px;
+}
+
+.ats-card-info > div {
+    flex: 1;
+    background: #f7f9fc;
+    border-radius: 9px;
+    padding: 14px;
+}
+
+.ats-card-info span {
+    display: block;
+    color: #7b8494;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.ats-card-info strong {
+    font-size: 18px;
+    color: #172033;
+}
+
+.ats-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.ats-card-actions button {
+    border: 1px solid #172033;
+    background: white;
+    color: #172033;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.ats-card-actions button:hover {
+    background: #172033;
+    color: white;
+}
+
+.ats-history-loading,
+.ats-empty,
+.ats-history-error {
+    background: white;
+    border: 1px solid #e4e8ee;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+}
+
+.ats-empty h2 {
+    margin-top: 0;
+    color: #172033;
+}
+
+.ats-empty p {
+    color: #697386;
+    margin-bottom: 20px;
+}
+
+.ats-history-error {
+    color: #dc2626;
+}
+
+@media (max-width: 700px) {
+
+    .ats-history-page {
+        padding: 30px 5%;
+    }
+
+    .ats-history-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .ats-card-main {
+        align-items: flex-start;
+    }
+
+    .ats-score {
+        min-width: 75px;
+        height: 75px;
+    }
+
+    .ats-card-info {
+        flex-direction: column;
+    }
+
+}

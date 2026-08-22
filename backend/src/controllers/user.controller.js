@@ -1,235 +1,324 @@
-const asyncHandler = require('../middlewares/asyncHandler')
-const userModel = require('../models/user.models')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const asyncHandler = require("../middlewares/asyncHandler");
+const userModel = require("../models/user.models");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-const registerHandler = asyncHandler(async(req,res)=>{
-    let {username,password,email,phoneNumber} = req.body
+const createToken = (userId) => {
+  return jwt.sign(
+    { id: userId },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" }
+  );
+};
 
-    //check all thing requred or not
-    if(!username.trim() || !password.trim() || !email.trim()){
-        return res.status(400).json({
-            message:"username , password , email is required"
-        })
-    }
-    //check if phone number is equal to 10 or not
-    if (!phoneNumber || !/^\d{10}$/.test(phoneNumber)) {
-  return res.status(400).json({
-     message: "Phone number must be exactly 10 digits"
-     });
-}
+const safeUser = (user) => ({
+  id: user._id,
+  username: user.username,
+  email: user.email,
+  phoneNumber: user.phoneNumber,
+  role: user.role,
+});
 
-    email = email.toLowerCase().trim();
+// Register
+const registerHandler = asyncHandler(async (req, res) => {
+  let {
+    username,
+    password,
+    email,
+    phoneNumber,
+  } = req.body;
 
-    if(!email?.trim() || !password?.trim() || !username?.trim()){
-        return res.status(400).json({
-            message:"email , password and username is not empty"
-        })
-    }
-    //check user
-    const checkUser = await userModel.findOne({email})
-    
-    if(checkUser){
+  username = username?.trim();
+  password = password?.trim();
+  email = email?.toLowerCase().trim();
+  phoneNumber = phoneNumber?.trim();
+
+  if (!username || !password || !email || !phoneNumber) {
+    return res.status(400).json({
+      success: false,
+      message: "Username, password, email and phone number are required",
+    });
+  }
+
+  if (!/^\d{10}$/.test(phoneNumber)) {
+    return res.status(400).json({
+      success: false,
+      message: "Phone number must contain exactly 10 digits",
+    });
+  }
+
+  const existingUser = await userModel.findOne({ email });
+
+  if (existingUser) {
+    return res.status(409).json({
+      success: false,
+      message: "Email already exists",
+    });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = await userModel.create({
+    username,
+    password: hashedPassword,
+    email,
+    phoneNumber,
+  });
+
+  const token = createToken(newUser._id);
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+
+  return res.status(201).json({
+    success: true,
+    message: "User created successfully",
+    user: safeUser(newUser),
+  });
+});
+
+// Login
+const loginController = asyncHandler(async (req, res) => {
+  let { email, password } = req.body;
+
+  email = email?.toLowerCase().trim();
+  password = password?.trim();
+
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Email and password are required",
+    });
+  }
+
+  const user = await userModel
+    .findOne({ email })
+    .select("+password");
+
+  // Same message for security
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid email or password",
+    });
+  }
+
+  const passwordMatched = await bcrypt.compare(
+    password,
+    user.password
+  );
+
+  if (!passwordMatched) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid email or password",
+    });
+  }
+
+  const token = createToken(user._id);
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Login successful",
+    user: safeUser(user),
+  });
+});
+
+// Update user
+const updateController = asyncHandler(async (req, res) => {
+  const currentUserId = req.user;
+
+  const {
+    username,
+    email,
+    phoneNumber,
+  } = req.body;
+
+  const currentUser = await userModel.findById(currentUserId);
+
+  if (!currentUser) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  const userInfo = {};
+
+  if (email !== undefined) {
+    const normalizedEmail = email.toLowerCase().trim();
+
+    if (normalizedEmail !== currentUser.email) {
+      const existingEmail = await userModel.findOne({
+        email: normalizedEmail,
+      });
+
+      if (existingEmail) {
         return res.status(409).json({
-            message:"Email already exist"
-        })
+          success: false,
+          message: "Email already exists",
+        });
+      }
+
+      userInfo.email = normalizedEmail;
+    }
+  }
+
+  if (phoneNumber !== undefined) {
+    const normalizedPhone = String(phoneNumber).trim();
+
+    if (!/^\d{10}$/.test(normalizedPhone)) {
+      return res.status(400).json({
+        success: false,
+        message: "Phone number must contain exactly 10 digits",
+      });
     }
 
-    //check password 
-    const hashPassword = await bcrypt.hash(password,10);
+    userInfo.phoneNumber = normalizedPhone;
+  }
 
-    
+  if (username !== undefined) {
+    const normalizedUsername = username.trim();
 
-    const newUser = await userModel.create({
-        username,
-        password:hashPassword,
-        email,
-        phoneNumber,
-    })
+    if (normalizedUsername.length < 3) {
+      return res.status(400).json({
+        success: false,
+        message: "Username must contain at least 3 characters",
+      });
+    }
 
-    const token = jwt.sign({id:newUser._id},process.env.JWT_SECRET,{expiresIn:"5m"})
+    userInfo.username = normalizedUsername;
+  }
 
-   res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "None"
+  if (Object.keys(userInfo).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "No valid field to update",
+    });
+  }
+
+  const updateUser = await userModel.findByIdAndUpdate(
+    currentUserId,
+    { $set: userInfo },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  return res.status(200).json({
+    success: true,
+    message: "User updated successfully",
+    user: safeUser(updateUser),
+  });
 });
 
+// Change password
+const passwordController = asyncHandler(async (req, res) => {
+  const { newPassword } = req.body;
+  const userId = req.user;
 
-    return res.status(201).json({
-        message:"User is created succesfully",
-        user:{
-            username:newUser.username,
-            email:newUser.email,
-            phoneNumber:newUser.phoneNumber
-        },
-        token
-    })
-})
+  if (!newPassword || newPassword.length < 8) {
+    return res.status(400).json({
+      success: false,
+      message: "Password must contain at least 8 characters",
+    });
+  }
 
-const loginController = asyncHandler(async(req,res)=>{
+  const user = await userModel.findById(userId);
 
- let {email,password} = req.body
-    //validation
-    if(!email.trim() || !password.trim()){
-        return res.status(400).json({
-            message:"email and password are required"
-        })
-    }
-   
-    email = email.toLowerCase().trim()
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
 
-    //find user
-    const user = await userModel.findOne({email});
-    
-    if(!user){
-        return res.status(401).json({
-            message:"Email is invalid"
-        })
-    }
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    const checkPassword = await bcrypt.compare(password,user.password);
+  user.password = hashedPassword;
 
-    if(!checkPassword){
-        return res.status(401).json({
-            message:"Password is wrong try again"
-        })
-    }
+  await user.save();
 
-    const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"1d"});
-    res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "None"
+  return res.status(200).json({
+    success: true,
+    message: "Password changed successfully",
+  });
 });
 
+// Logout
+const logoutUser = asyncHandler(async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
 
-    return res.status(200).json({
-        message:"User is login",
-        user,
-        token
-    })
-})
+  return res.status(200).json({
+    success: true,
+    message: "Logout successful",
+  });
+});
 
+// Get role
+const userAdminController = asyncHandler(async (req, res) => {
+  const userId = req.user;
 
-const updateController = asyncHandler(async(req,res)=>{
-    const {username,email,phoneNumber} = req.body
+  const currentUser = await userModel
+    .findById(userId)
+    .select("role")
+    .lean();
 
-    const currentUserId = req.user
+  if (!currentUser) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
 
-    const checkUser = await userModel.findById(currentUserId)
+  return res.status(200).json({
+    success: true,
+    currentUser,
+  });
+});
 
-    if(!checkUser){
-        return res.status(404).json({
-            message:"user not found"
-        })
-    }
+// Current user
+const currenctUserController = asyncHandler(async (req, res) => {
+  const userId = req.user;
 
-    const userInfo = {};
+  const currentUser = await userModel
+    .findById(userId)
+    .select("username email phoneNumber role createdAt")
+    .lean();
 
-    //check email exist and also check in database same email are not exist
-    if(email && email !== checkUser.email){
-        const checkEmail = await userModel.findOne({email})
-        if(checkEmail){
-            return res.status(401).json({
-            message:"email is already exist"
-        })
-        }
-      userInfo.email = email 
-    }
+  if (!currentUser) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
 
-    if(phoneNumber && !/^\d{10}$/.test(phoneNumber)){
-        return res.status(400).json({
-            message:"Phone number should be 10 digits"
-        })
-    }
-    if(phoneNumber)userInfo.phoneNumber = phoneNumber
-    if(username)userInfo.username = username
-
-    if(Object.keys(userInfo).length === 0){
-        return res.status(400).json({
-            message:"no valid filed updated"
-        })
-    }
-
-    const updateUser = await userModel.findByIdAndUpdate(
-        currentUserId,
-        { $set:userInfo},
-        {new:true}
-    )
-return res.status(200).json({
-    messge:"user is update",
-    updateUser
-})
-})
-
-const passwordController = asyncHandler(async(req,res)=>{
-    const {newPassword} = req.body
-
-    const userId = req.user
-
-    const user = await userModel.findById(userId)
-
-    if(!user){
-        return res.status(404).json({
-            message:"user not exist"
-        })
-    }
-    
-    const hashPassword = await bcrypt.hash(newPassword,10);
-
-    user.password = hashPassword
-   await user.save();
-
-return res.status(200).json({
-    message:"password has changed"
-})
-
-}) 
-
-const logoutUser = asyncHandler(async(req,res)=>{
-    const {token} = req.cookies
-    if(!token){
-        res.status(400).json({
-            message:"token is not avaible"
-        })
-    }
-    res.clearCookie("token")
-   res.status(200).json({
-    message:"user is logout"
-   })
-})
-
-const userAdminController = asyncHandler(async(req,res)=>{
-    const user = req.user
-   const currentUser = await userModel.findById(user).select("role")
-
-    return res.status(200).json({
-        message:"user role",
-        currentUser
-    })
-})
-
-const currenctUserController = asyncHandler(async(req,res)=>{
-    const user = req.user
-    const currentuser = await userModel.findById(user)
-    if(!currentuser){
-        res.status(404).json({
-            message:"user is not found"
-        })
-    }
-    return res.status(200).json({
-        message:"current user data",
-        currentuser
-    })
-})
+  return res.status(200).json({
+    success: true,
+    currentUser,
+  });
+});
 
 module.exports = {
-    registerHandler,
-    loginController,
-    updateController,
-    passwordController,
-    logoutUser,
-    userAdminController,
-    currenctUserController
-}
+  registerHandler,
+  loginController,
+  updateController,
+  passwordController,
+  logoutUser,
+  userAdminController,
+  currenctUserController,
+};

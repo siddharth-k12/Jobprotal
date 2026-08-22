@@ -1,78 +1,90 @@
-const saveModel = require('../models/saved.models')
-const asyncHandler = require('../middlewares/asyncHandler')
-// const { default: JobId } = require('../../../frontend/src/components/JobId')
+const saveModel = require("../models/saved.models");
+const asyncHandler = require("../middlewares/asyncHandler");
 
-const savedController = asyncHandler(async(req,res)=>{
-    const userId = req.user
-    const {jobId} = req.params
+const savedController = asyncHandler(async (req, res) => {
+  const userId = req.user;
+  const { jobId } = req.params;
 
-    const saveJob = await saveModel.findOne({userId , jobId}) 
-    if(saveJob){
-        return res.status(400).json({
-            message:"saved job already exist"
-        })
-    }
-    const job = await saveModel.create({
-        userId,
-        jobId
-    })
-    return res.status(200).json({
-        message:"saved job is create",
-        job
-    })
-})
+  const existingSavedJob = await saveModel.findOne({
+    userId,
+    jobId,
+  });
 
-const allSavedJobController = asyncHandler(async(req,res)=>{
-    const userId = req.user
-    // const {jobId} = req.params
+  if (existingSavedJob) {
+    return res.status(409).json({
+      success: false,
+      message: "Job is already saved",
+    });
+  }
 
-    const savedJob = await saveModel.find({userId}).populate("jobId")
+  const job = await saveModel.create({
+    userId,
+    jobId,
+  });
 
-    if(!savedJob || savedJob.length === 0){
-        return res.status(400).json({
-            message:"no jobs avaible"
-        })
-    }
-    return res.status(200).json({
-        message:"all saved jobs",
-        savedJob
-    })
-})
+  return res.status(201).json({
+    success: true,
+    message: "Job saved successfully",
+    job,
+  });
+});
 
-const deleteSavedController = asyncHandler(async(req,res)=>{
-    const userId = req.user
-    const {jobId} = req.params
+const allSavedJobController = asyncHandler(async (req, res) => {
+  const userId = req.user;
 
-    const saved = await saveModel.findOneAndDelete({userId,jobId})
+  const savedJob = await saveModel
+    .find({ userId })
+    .populate("jobId")
+    .sort({ saveAt: -1 })
+    .lean();
 
-    if (!saved) {
+  return res.status(200).json({
+    success: true,
+    message: "All saved jobs",
+    savedJob,
+  });
+});
+
+const deleteSavedController = asyncHandler(async (req, res) => {
+  const userId = req.user;
+  const { jobId } = req.params;
+
+  const saved = await saveModel.findOneAndDelete({
+    userId,
+    jobId,
+  });
+
+  if (!saved) {
     return res.status(404).json({
+      success: false,
       message: "Saved job not found",
     });
   }
 
   return res.status(200).json({
+    success: true,
     message: "Job removed from saved list",
-  });
-})
-
- const checkSavedController = asyncHandler(async (req, res) => {
-  const userId = req.user;
-  const { jobId } = req.params;
-
-  const saved = await saveModel.findOne({ userId, jobId });
-
-  return res.status(200).json({
-    saved: !!saved // true or false
   });
 });
 
+const checkSavedController = asyncHandler(async (req, res) => {
+  const userId = req.user;
+  const { jobId } = req.params;
 
+  const saved = await saveModel.exists({
+    userId,
+    jobId,
+  });
 
+  return res.status(200).json({
+    success: true,
+    saved: Boolean(saved),
+  });
+});
 
 module.exports = {
-    savedController,
-    allSavedJobController,
-    deleteSavedController,
-    checkSavedController
-}
+  savedController,
+  allSavedJobController,
+  deleteSavedController,
+  checkSavedController,
+};

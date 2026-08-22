@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { candidateApi } from "../../api/api";
+import { toast } from "react-toastify";
 import "../../styles/CandidateAll.css";
-
 
 const Experience = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const Experience = () => {
     employeType: "full-time",
     startDate: "",
     endDate: "",
-    isCurrent: false
+    isCurrent: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -21,22 +21,40 @@ const Experience = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setForm({
-      ...form,
-      [name]: type === "checkbox" ? checked : value
-    });
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
 
     try {
-      await candidateApi.post("/profile-expreience", form);
-      navigate("/home"); // final destination
+      await candidateApi.post(
+        "/profile-expreience",
+        form
+      );
+
+      toast.success(
+        "Experience saved successfully"
+      );
+
+      // Final onboarding destination
+      navigate("/home");
+
     } catch (error) {
-      console.error("Experience save error:", error);
-      alert("Failed to save experience");
+      console.error(
+        "Experience save error:",
+        error
+      );
+
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to save experience"
+      );
     } finally {
       setLoading(false);
     }
@@ -48,8 +66,10 @@ const Experience = () => {
 
   return (
     <div className="form-container">
-      <form onSubmit={handleSubmit} className="form-card">
-
+      <form
+        onSubmit={handleSubmit}
+        className="form-card"
+      >
         <h2>Experience (Optional)</h2>
 
         <input
@@ -73,9 +93,17 @@ const Experience = () => {
           value={form.employeType}
           onChange={handleChange}
         >
-          <option value="full-time">Full Time</option>
-          <option value="intern">Intern</option>
-          <option value="part-time">Part Time</option>
+          <option value="full-time">
+            Full Time
+          </option>
+
+          <option value="intern">
+            Intern
+          </option>
+
+          <option value="part-time">
+            Part Time
+          </option>
         </select>
 
         <input
@@ -100,20 +128,27 @@ const Experience = () => {
             name="isCurrent"
             checked={form.isCurrent}
             onChange={handleChange}
-          />{" "}
-          Currently working here
+          />
+
+          {" "}Currently working here
         </label>
 
-        {/* Submit */}
-        <button type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Save Experience"}
+        <button
+          type="submit"
+          disabled={loading}
+        >
+          {loading
+            ? "Saving..."
+            : "Save Experience"}
         </button>
 
-        {/* Skip */}
-        <button type="button" onClick={handleSkip}>
+        <button
+          type="button"
+          onClick={handleSkip}
+          disabled={loading}
+        >
           Skip
         </button>
-
       </form>
     </div>
   );
