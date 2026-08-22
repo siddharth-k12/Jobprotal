@@ -8,7 +8,7 @@ const ATSAnalysis = require("../models/ATSAnalysis");
 
 const AI_SERVICE_URL =
     process.env.AI_SERVICE_URL ||
-    "http://127.0.0.1:8000";
+    "https://nexthire-ai-service.onrender.com";
 
 
 // =====================================================
