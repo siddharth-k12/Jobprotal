@@ -16,7 +16,7 @@ const app = express();
 
 
 // =====================================================
-// SECURITY / LOGGING
+// LOGGING / SECURITY
 // =====================================================
 
 app.use(helmet());
@@ -35,8 +35,7 @@ const allowedOrigins = [
 const corsOptions = {
     origin: function (origin, callback) {
 
-        // Allow requests without Origin
-        // such as Postman/server-to-server requests
+        // Postman / server-to-server requests
         if (!origin) {
             return callback(null, true);
         }
@@ -45,7 +44,7 @@ const corsOptions = {
             return callback(null, true);
         }
 
-        console.log("Blocked CORS origin:", origin);
+        console.log("CORS BLOCKED:", origin);
 
         return callback(
             new Error("Not allowed by CORS")
@@ -66,20 +65,18 @@ const corsOptions = {
     allowedHeaders: [
         "Content-Type",
         "Authorization"
-    ]
+    ],
+
+    optionsSuccessStatus: 204
 };
 
 
-// CORS middleware
+// IMPORTANT
 app.use(cors(corsOptions));
 
 
-// Explicit preflight handling
-app.options("*", cors(corsOptions));
-
-
 // =====================================================
-// BODY / COOKIE
+// BODY
 // =====================================================
 
 app.use(express.json());
@@ -92,58 +89,33 @@ app.use(cookieParser());
 
 app.use("/user", userRouter);
 
-app.use(
-    "/candidate",
-    candidateRouter
-);
+app.use("/candidate", candidateRouter);
 
-app.use(
-    "/company",
-    companyRouter
-);
+app.use("/company", companyRouter);
 
-app.use(
-    "/job",
-    jobRouter
-);
+app.use("/job", jobRouter);
 
-app.use(
-    "/saved",
-    savedRoute
-);
+app.use("/saved", savedRoute);
 
-app.use(
-    "/resume",
-    resumeRouter
-);
+app.use("/resume", resumeRouter);
 
-app.use(
-    "/api/ats",
-    atsRoutes
-);
+app.use("/api/ats", atsRoutes);
 
 
 // =====================================================
 // ERROR HANDLER
 // =====================================================
 
-app.use(
-    (err, req, res, next) => {
+app.use((err, req, res, next) => {
 
-        console.error(
-            "SERVER ERROR:",
-            err
-        );
+    console.error("SERVER ERROR:", err);
 
-        res.status(
-            err.status || 500
-        ).json({
-            message:
-                err.message ||
-                "Something went wrong"
-        });
-    }
-);
+    res.status(err.status || 500).json({
+        message:
+            err.message ||
+            "Something went wrong"
+    });
+});
 
 
 module.exports = app;
