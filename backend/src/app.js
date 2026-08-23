@@ -11,7 +11,8 @@ const jobRouter = require("./routes/job.routes");
 const savedRoute = require("./routes/save.routes");
 const resumeRouter = require("./routes/resume.routes");
 const atsRoutes = require("./routes/atsRoutes.js");
-
+const applicationRouter =
+  require("./routes/application.routes");
 const app = express();
 
 
@@ -101,7 +102,10 @@ app.use("/resume", resumeRouter);
 
 app.use("/api/ats", atsRoutes);
 
-
+app.use(
+  "/application",
+  applicationRouter
+);
 // =====================================================
 // ERROR HANDLER
 // =====================================================

@@ -51,18 +51,15 @@ const JobId = () => {
           savedResponse.data.saved === true
         );
       } catch (error) {
-        console.error(
-          "Failed to load job:",
-          error
-        );
+  console.error("Failed to load job:", error);
+  console.error("Status:", error.response?.status);
+  console.error("Response:", error.response?.data);
 
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load job"
-        );
-
-        navigate("/");
-      } finally {
+  toast.error(
+    error.response?.data?.message ||
+      "Failed to load job"
+  );
+}finally {
         setLoading(false);
       }
     };
