@@ -163,7 +163,7 @@ const ResumeLibrary = () => {
                     <button
                         className="resume-upload-btn"
                         onClick={() =>
-                            navigate("/resume/upload")
+                            navigate("resume")
                         }
                     >
                         Upload Resume
@@ -194,7 +194,7 @@ const ResumeLibrary = () => {
                             <button
                                 onClick={() =>
                                     navigate(
-                                        "/resume/upload"
+                                        "/resume"
                                     )
                                 }
                             >
